@@ -1,3 +1,4 @@
+from django.conf import settings
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser
@@ -14,7 +15,13 @@ class UploadSongView(APIView):
             return Response({"error": "No file provided"}, status=status.HTTP_400_BAD_REQUEST)
 
         file_path = default_storage.save(f'audio/{audio_file.name}', audio_file)
-        return Response({"file_path": file_path}, status=status.HTTP_201_CREATED)
+
+        file_url = request.build_absolute_uri(settings.MEDIA_URL + file_path.replace('audio/', 'audio/'))
+
+        return Response({
+            "file_path": file_path,
+            "file_url": file_url
+            }, status=status.HTTP_201_CREATED)
 
 
 @api_view(['GET'])
