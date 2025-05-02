@@ -19,8 +19,13 @@ class UploadSongView(APIView):
 
 @api_view(['GET'])
 def bars(request, file_path):
-    if not file_path:
-        return Response({"error": "No file path provided"}, status=status.HTTP_400_BAD_REQUEST)
+    if not file_path or not default_storage.exists(file_path):
+        return Response({"error": "Invalid or missing file path"}, status=400)
+
+    # Open the file
+    with default_storage.open(file_path, 'rb') as f:
+        audio_data = f.read()
+        # process audio_data here...
 
     # Example logic
     result = ["sound1", "sound2", "sound3"]
@@ -28,8 +33,13 @@ def bars(request, file_path):
 
 @api_view(['GET'])
 def vibrations(request, file_path):
-    if not file_path:
-        return Response({"error": "No file path provided"}, status=status.HTTP_400_BAD_REQUEST)
+    if not file_path or not default_storage.exists(file_path):
+        return Response({"error": "Invalid or missing file path"}, status=400)
+
+    # Open the file
+    with default_storage.open(file_path, 'rb') as f:
+        audio_data = f.read()
+        # process audio_data here...
 
     # Example logic
     result = [1, 2, 3]
@@ -37,8 +47,13 @@ def vibrations(request, file_path):
 
 @api_view(['GET'])
 def colors(request, file_path):
-    if not file_path:
-        return Response({"error": "No file path provided"}, status=status.HTTP_400_BAD_REQUEST)
+    if not file_path or not default_storage.exists(file_path):
+        return Response({"error": "Invalid or missing file path"}, status=400)
+
+    # Open the file
+    with default_storage.open(file_path, 'rb') as f:
+        audio_data = f.read()
+        # process audio_data here...
 
     # Example logic
     result = ["A", "B", "C"]
