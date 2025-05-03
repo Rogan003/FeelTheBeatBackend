@@ -7,6 +7,7 @@ from rest_framework.decorators import api_view
 from rest_framework import status
 
 from ftbapp.bars import bar_analyzer
+from ftbapp.colors.generatecolors import get_colors
 from ftbapp.shared import utils
 from ftbapp.vibrations import vibration_analyzer
 
@@ -58,11 +59,5 @@ def colors(request, file_path):
     if not file_path or not default_storage.exists(file_path):
         return Response({"error": "Invalid or missing file path"}, status=400)
 
-    # Open the file
-    with default_storage.open(file_path, 'rb') as f:
-        audio_data = f.read()
-        # process audio_data here...
-
-    # Example logic
-    result = ["A", "B", "C"]
+    result = get_colors(file_path)
     return Response({"result": result})
