@@ -25,7 +25,7 @@ def predict_colors(model, y, sr):
     return rgb_scaled.tolist()
 
 def get_colors(file_path):
-    model = tf.keras.models.load_model("audio_to_color_model.keras")
+    model = tf.keras.models.load_model("ftbapp/colors/audio_to_color_model.keras")
 
     with default_storage.open(file_path, 'rb') as f:
         y, sr = utils.audio_file_to_y_sr(f)
