@@ -6,6 +6,9 @@ from django.core.files.storage import default_storage
 from rest_framework.decorators import api_view
 from rest_framework import status
 
+from ftbapp.shared import utils
+from ftbapp.vibrations import vibration_analizer
+
 class UploadSongView(APIView):
     parser_classes = [MultiPartParser]
 
@@ -43,13 +46,11 @@ def vibrations(request, file_path):
     if not file_path or not default_storage.exists(file_path):
         return Response({"error": "Invalid or missing file path"}, status=400)
 
-    # Open the file
     with default_storage.open(file_path, 'rb') as f:
-        audio_data = f.read()
-        # process audio_data here...
+        y, sr = utils.audio_file_to_y_sr(f)
 
-    # Example logic
-    result = [1, 2, 3]
+    result = vibration_analizer.sound_to_vibration(y, sr)
+
     return Response({"result": result})
 
 @api_view(['GET'])
