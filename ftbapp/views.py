@@ -6,8 +6,9 @@ from django.core.files.storage import default_storage
 from rest_framework.decorators import api_view
 from rest_framework import status
 
+from ftbapp.bars import bar_analyzer
 from ftbapp.shared import utils
-from ftbapp.vibrations import vibration_analizer
+from ftbapp.vibrations import vibration_analyzer
 
 class UploadSongView(APIView):
     parser_classes = [MultiPartParser]
@@ -34,11 +35,10 @@ def bars(request, file_path):
 
     # Open the file
     with default_storage.open(file_path, 'rb') as f:
-        audio_data = f.read()
-        # process audio_data here...
+        y, sr = utils.audio_file_to_y_sr(f)
 
     # Example logic
-    result = ["sound1", "sound2", "sound3"]
+    result = bar_analyzer.convert_song_to_bars(y, sr)
     return Response({"result": result})
 
 @api_view(['GET'])
@@ -49,7 +49,7 @@ def vibrations(request, file_path):
     with default_storage.open(file_path, 'rb') as f:
         y, sr = utils.audio_file_to_y_sr(f)
 
-    result = vibration_analizer.sound_to_vibration(y, sr)
+    result = vibration_analyzer.sound_to_vibration(y, sr)
 
     return Response({"result": result})
 
