@@ -12,7 +12,7 @@ def extract_mfcc_per_second(y, sr):
         segment = y[sec * sr: (sec + 1) * sr]
         if len(segment) < sr:
             continue
-        mfcc = librosa.feature.mfcc(y=segment, sr=sr, n_mfcc=40)
+        mfcc = librosa.feature.mfcc(y=segment, sr=sr, n_mfcc=13)
         mfcc_mean = np.mean(mfcc, axis=1)
         mfccs.append(mfcc_mean)
     return np.stack(mfccs)
